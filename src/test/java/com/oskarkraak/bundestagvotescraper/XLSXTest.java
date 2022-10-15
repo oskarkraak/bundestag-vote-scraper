@@ -136,8 +136,8 @@ class XLSXTest {
     @Test
     void afterMergingC6ShouldContain2() {
         XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
-        String value = getCell(xlsx, 5, 2).getStringCellValue();
-        assertEquals("2", value);
+        double value = getCell(xlsx, 5, 2).getNumericCellValue();
+        assertEquals(2.0, value);
     }
 
     @Test
