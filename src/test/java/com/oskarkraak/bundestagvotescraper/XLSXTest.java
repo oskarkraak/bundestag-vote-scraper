@@ -120,13 +120,6 @@ class XLSXTest {
     }
 
     @Test
-    void afterMergingA4ShouldContainA1() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
-        String value = getCell(xlsx, 3, 0).getStringCellValue();
-        assertEquals("A1", value);
-    }
-
-    @Test
     void afterMergingE4ShouldContainPp() {
         XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
         String value = getCell(xlsx, 3, 4).getStringCellValue();
@@ -144,6 +137,26 @@ class XLSXTest {
     void afterMergingA5ShouldBeNull() {
         XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
         assertNull(xlsx.getWorkbook().getSheetAt(0).getRow(4));
+    }
+
+    @Test
+    void afterMergingA4ShouldContainA1() {
+        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile()});
+        String value = getCell(xlsx, 3, 0).getStringCellValue();
+        assertEquals("A1", value);
+    }
+
+    @Test
+    void afterMergingA12ShouldContain100() {
+        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile(), loadTestFile()});
+        double value = getCell(xlsx, 11, 0).getNumericCellValue();
+        assertEquals(100.0, value);
+    }
+
+    @Test
+    void afterMergingA11ShouldBeNull() {
+        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        assertNull(xlsx.getWorkbook().getSheetAt(0).getRow(10));
     }
 
 }
