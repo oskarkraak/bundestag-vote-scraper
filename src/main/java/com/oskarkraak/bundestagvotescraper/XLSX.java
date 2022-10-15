@@ -34,7 +34,7 @@ public class XLSX {
         workbook.write(out);
     }
 
-    public static XLSX merge(XLSX[] files) {
+    public static XLSX concatenate(XLSX[] files) {
         XSSFWorkbook mergedWorkbook = new XSSFWorkbook();
         XSSFSheet mergedSheet = mergedWorkbook.createSheet();
         int fileStartRowNum = 0;

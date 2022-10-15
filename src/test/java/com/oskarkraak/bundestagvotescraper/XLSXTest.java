@@ -114,48 +114,48 @@ class XLSXTest {
 
     @Test
     void afterMergingA1ShouldContainA1() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile()});
         String value = getCell(xlsx, 0, 0).getStringCellValue();
         assertEquals("A1", value);
     }
 
     @Test
     void afterMergingE4ShouldContainPp() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile()});
         String value = getCell(xlsx, 3, 4).getStringCellValue();
         assertEquals("pp", value);
     }
 
     @Test
     void afterMergingC6ShouldContain2() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile()});
         double value = getCell(xlsx, 5, 2).getNumericCellValue();
         assertEquals(2.0, value);
     }
 
     @Test
     void afterMergingA5ShouldBeNull() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile()});
         assertNull(xlsx.getWorkbook().getSheetAt(0).getRow(4));
     }
 
     @Test
     void afterMergingA4ShouldContainA1() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile()});
         String value = getCell(xlsx, 3, 0).getStringCellValue();
         assertEquals("A1", value);
     }
 
     @Test
     void afterMergingA12ShouldContain100() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile(), loadTestFile(), loadTestFile()});
         double value = getCell(xlsx, 11, 0).getNumericCellValue();
         assertEquals(100.0, value);
     }
 
     @Test
     void afterMergingA11ShouldBeNull() {
-        XLSX xlsx = XLSX.merge(new XLSX[]{loadTestFile(), loadTestFile()});
+        XLSX xlsx = XLSX.concatenate(new XLSX[]{loadTestFile(), loadTestFile()});
         assertNull(xlsx.getWorkbook().getSheetAt(0).getRow(10));
     }
 
