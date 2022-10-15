@@ -15,7 +15,7 @@ public class XLSX {
 
     /**
      * This constructor will instantiate an XLSX object with a workbook.
-     * If you want to create an XLSX object from a XLSX file, use the <code>XLSX.read(String path)</code> method
+     * If you want to create an XLSX object from a XLSX file, use the <code>XLSX.read(String path)</code> method.
      *
      * @param workbook is the workbook of the XLSX file
      */
@@ -23,17 +23,37 @@ public class XLSX {
         this.workbook = workbook;
     }
 
+    /**
+     * Read a .xlsx file.
+     *
+     * @param path is the file path (including name) of the file
+     * @return A new XLSX instance containing the .xlsx file
+     * @throws IOException if the file cannot be found or if reading the file fails
+     */
     public static XLSX read(String path) throws IOException {
         FileInputStream inputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
         return new XLSX(workbook);
     }
 
+    /**
+     * Writes an .xlsx file with the content of this XLSX instance.
+     *
+     * @param path is the file path (including name) of the file
+     * @throws IOException if writing the file fails
+     */
     public void write(String path) throws IOException {
         FileOutputStream out = new FileOutputStream(path);
         workbook.write(out);
     }
 
+    /**
+     * Concatenates the contents of an array of XLSX instances.
+     * The contents will be concatenated in the order in which they are in the array.
+     *
+     * @param files contains the XLSX instances that should be concatenated
+     * @return A new XLSX instance that contains the concatenated contents of the given XLSX instances
+     */
     public static XLSX concatenate(XLSX[] files) {
         XSSFWorkbook mergedWorkbook = new XSSFWorkbook();
         XSSFSheet mergedSheet = mergedWorkbook.createSheet();
@@ -77,8 +97,14 @@ public class XLSX {
         }
     }
 
+    /**
+     * @return The XSSFWorkbook of this XLSX instance
+     */
     public XSSFWorkbook getWorkbook() {
         return workbook;
     }
 
 }
+
+
+
