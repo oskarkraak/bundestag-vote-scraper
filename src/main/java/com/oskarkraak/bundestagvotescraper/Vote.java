@@ -22,13 +22,21 @@ public class Vote {
     }
 
     private String getDateFromDescription(String description) {
-        // TODO
-        return "";
+        if (publishingDate.equals(""))
+            return "";
+        int i = 0;
+        while (description.charAt(i) != ':')
+            i++;
+        return description.substring(0, i);
     }
 
     private String getNameFromDescription(String description) {
-        // TODO
-        return "";
+        if (publishingDate.equals(""))
+            return description;
+        int i = 0;
+        while (description.charAt(i) != ':')
+            i++;
+        return description.substring(i + 2, description.length() - 1);
     }
 
     public String getDate() {
