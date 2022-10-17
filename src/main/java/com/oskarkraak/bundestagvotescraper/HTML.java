@@ -2,7 +2,7 @@ package com.oskarkraak.bundestagvotescraper;
 
 public class HTML {
 
-    String html;
+    private String html;
 
     /**
      * Creates a new HTML instance from HTML code.
@@ -25,38 +25,60 @@ public class HTML {
     }
 
     /**
-     * Gives an array containing all tag that are inside no other tags.
-     * The Strings will contain the tag's contents, i.e. text or other tags.
+     * Gives an array containing all tags that are inside no other tags.
      *
-     * @return A String[] where each String contains one tag and its contents
+     * @return A Tag[] where the tags also contain their contents
      */
-    public String[] getRootTags() {
+    public Tag[] getTags() {
         // TODO
         return null;
     }
 
-    /**
-     * Extracts the contents of a tag, including texts and other tags.
-     * Will return the contents for the first match in this HTML instance.
-     *
-     * @param tag is a String containing the tag and the tag's contents
-     * @return A String containing the contents of the tag
-     */
-    public String getTagContent(String tag) {
+    @Override
+    public String toString() {
         // TODO
-        return "";
+        return null;
     }
 
-    /**
-     * Extracts the value of a root tag's property.
-     * Will return the value for the first match in this HTML instance.
-     *
-     * @param propertyName is the property which should be returned
-     * @return A String containing the value of the property
-     */
-    public String getRootTagProperty(String propertyName) {
-        // TODO
-        return "";
+    public static class Tag {
+
+        private String html;
+
+        private Tag(String html) {
+            this.html = html;
+        }
+
+        /**
+         * Extracts the value of a property.
+         *
+         * @param propertyName is the property which should be returned
+         * @return A String containing the value of the property or null if the property does not exist
+         */
+        public String getProperty(String propertyName) {
+            // TODO
+            return null;
+        }
+
+        /**
+         * Extracts the opening tag from this tag.
+         *
+         * @return A String containing the opening tag
+         */
+        public String getOpening() {
+            // TODO
+            return null;
+        }
+
+        /**
+         * Extracts the contents of this tag, including texts and other tags.
+         *
+         * @return A new HTML instance containing the contents of this tag
+         */
+        public HTML getContent() {
+            // TODO
+            return null;
+        }
+
     }
 
 }
