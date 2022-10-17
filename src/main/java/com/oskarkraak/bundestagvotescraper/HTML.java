@@ -135,20 +135,18 @@ public class HTML {
          * @return A new HTML instance containing the contents of this tag
          */
         public HTML getContent() {
-            int start = -1;
-            int end = -2;
+            int start = html.indexOf(getOpening()) + getOpening().length();
+            int end = -1;
             // Iterate through the HTML, skipping this tag's opening
             int stack = 1;
-            for (int i = html.indexOf(getOpening()) + getOpening().length(); i < html.length(); i++) {
+            for (int i = start; i < html.length(); i++) {
                 if (html.charAt(i) == '<') {
                     // Manage stack
                     if (html.charAt(i + 1) != '/')
                         stack++;
                     else
                         stack--;
-                    // Determine start and end
-                    if (start == -1)
-                        start = i;
+                    // Determine end
                     if (stack <= 0) {
                         end = i;
                         break;
