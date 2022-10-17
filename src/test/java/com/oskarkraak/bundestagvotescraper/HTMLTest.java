@@ -12,7 +12,7 @@ public class HTMLTest {
     private HTML loadHTML() {
         StringBuilder html = new StringBuilder();
         try {
-            FileReader fr = new FileReader(getClass().getClassLoader().getResource("TestFile.xlsx").getPath());
+            FileReader fr = new FileReader(getClass().getClassLoader().getResource("website.html").getPath());
             BufferedReader br = new BufferedReader(fr);
             String line;
             while ((line = br.readLine()) != null)
