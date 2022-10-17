@@ -1,8 +1,15 @@
 package com.oskarkraak.bundestagvotescraper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+
 public class HTML {
 
-    private String html;
+    private final String html;
 
     /**
      * Creates a new HTML instance from HTML code.
@@ -16,12 +23,20 @@ public class HTML {
     /**
      * Connects to a website and retrieves its HTML code.
      *
-     * @param url is the URL of the website
-     * @return A HTML instance containing the website's HTML code
+     * @param urlString is the URL of the website
+     * @return A new HTML instance containing the website's HTML code
+     * @throws IOException if the URL is malformed or an I/O exception occurs
      */
-    public static HTML get(String url) {
-        // TODO
-        return null;
+    public static HTML get(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        URLConnection connection = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder html = new StringBuilder();
+        String line;
+        while ((line = in.readLine()) != null)
+            html.append(line);
+        in.close();
+        return new HTML(html.toString());
     }
 
     /**
@@ -30,19 +45,41 @@ public class HTML {
      * @return A Tag[] where the tags also contain their contents
      */
     public Tag[] getTags() {
-        // TODO
-        return null;
+        ArrayList<Tag> tags = new ArrayList<>();
+        StringBuilder tag = new StringBuilder();
+        int stack = 0;
+        for (int i = 0; i < html.length(); i++) {
+            char c = html.charAt(i);
+            tag.append(c);
+            // Manage stack
+            if (c == '<') {
+                if (html.charAt(i + 1) != '/')
+                    stack++;
+                else
+                    stack--;
+            } else if (c == '>') {
+                if (stack <= 0) {
+                    // Start new tag
+                    tags.add(new Tag(tag.toString()));
+                    tag = new StringBuilder();
+                }
+            }
+        }
+        // Convert to array
+        Tag[] result = new Tag[tags.size()];
+        for (int i = 0; i < tags.size(); i++)
+            result[i] = tags.get(i);
+        return result;
     }
 
     @Override
     public String toString() {
-        // TODO
-        return null;
+        return html.trim();
     }
 
     public static class Tag {
 
-        private String html;
+        private final String html;
 
         private Tag(String html) {
             this.html = html;
@@ -55,8 +92,19 @@ public class HTML {
          * @return A String containing the value of the property or null if the property does not exist
          */
         public String getProperty(String propertyName) {
-            // TODO
-            return null;
+            String opening = getOpening();
+            int start = opening.indexOf(" " + propertyName + "=\"");
+            if (start == -1)
+                return null;
+            start += propertyName.length() + 3;
+            int end = -1;
+            for (int i = start; i < opening.length(); i++) {
+                if (html.charAt(i) == '"') {
+                    end = i;
+                    break;
+                }
+            }
+            return opening.substring(start, end);
         }
 
         /**
@@ -65,8 +113,20 @@ public class HTML {
          * @return A String containing the opening tag
          */
         public String getOpening() {
-            // TODO
-            return null;
+            int start = -1;
+            int end = -2;
+            for (int i = 0; i < html.length(); i++) {
+                if (start == -1) {
+                    if (html.charAt(i) == '<')
+                        start = i;
+                } else {
+                    if (html.charAt(i) == '>') {
+                        end = i;
+                        break;
+                    }
+                }
+            }
+            return html.substring(start, end + 1);
         }
 
         /**
@@ -75,8 +135,32 @@ public class HTML {
          * @return A new HTML instance containing the contents of this tag
          */
         public HTML getContent() {
-            // TODO
-            return null;
+            int start = -1;
+            int end = -2;
+            // Iterate through the HTML, skipping this tag's opening
+            int stack = 1;
+            for (int i = html.indexOf(getOpening()) + getOpening().length(); i < html.length(); i++) {
+                if (html.charAt(i) == '<') {
+                    // Manage stack
+                    if (html.charAt(i + 1) != '/')
+                        stack++;
+                    else
+                        stack--;
+                    // Determine start and end
+                    if (start == -1)
+                        start = i;
+                    if (stack <= 0) {
+                        end = i;
+                        break;
+                    }
+                }
+            }
+            return new HTML(html.substring(start, end));
+        }
+
+        @Override
+        public String toString() {
+            return html;
         }
 
     }
