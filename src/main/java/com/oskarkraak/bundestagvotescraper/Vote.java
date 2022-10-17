@@ -36,7 +36,7 @@ public class Vote {
         int i = 0;
         while (description.charAt(i) != ':')
             i++;
-        return description.substring(i + 2, description.length() - 1);
+        return description.substring(i + 2);
     }
 
     public String getDate() {
