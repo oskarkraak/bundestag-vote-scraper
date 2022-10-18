@@ -8,6 +8,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class XLSX {
 
@@ -33,6 +35,20 @@ public class XLSX {
     public static XLSX read(String path) throws IOException {
         FileInputStream inputStream = new FileInputStream(path);
         XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+        return new XLSX(workbook);
+    }
+
+    /**
+     * Download a .xlsx file from a URL.
+     *
+     * @param urlString is the URL of the file
+     * @return A new XLSX instance containing the .xlsx file
+     * @throws IOException if the URL is malformed or an I/O exception occurs
+     */
+    public static XLSX download(String urlString) throws IOException {
+        URL url = new URL(urlString);
+        URLConnection connection = url.openConnection();
+        XSSFWorkbook workbook = new XSSFWorkbook(connection.getInputStream());
         return new XLSX(workbook);
     }
 
