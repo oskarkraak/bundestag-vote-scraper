@@ -24,6 +24,8 @@ public class Vote {
     private String getDateFromDescription(String description) {
         if (publishingDate.equals(""))
             return "";
+        if (!description.contains(":"))
+            return "";
         int i = 0;
         while (description.charAt(i) != ':')
             i++;
@@ -32,6 +34,8 @@ public class Vote {
 
     private String getNameFromDescription(String description) {
         if (publishingDate.equals(""))
+            return description;
+        if (!description.contains(":"))
             return description;
         int i = 0;
         while (description.charAt(i) != ':')
