@@ -41,10 +41,13 @@ public class HTML {
 
     /**
      * Gives an array containing all tags that are inside no other tags.
+     * Warning: Will not work if the HTML contains void elements other than "br" and "br/".
      *
      * @return A Tag[] where the tags also contain their contents
      */
     public Tag[] getTags() {
+        String html = this.html.replace("<br>", "\n")
+                .replace("<br/>", "\n"); // Remove any br tags that would break the stack
         ArrayList<Tag> tags = new ArrayList<>();
         StringBuilder tag = new StringBuilder();
         int stack = 0;
@@ -131,10 +134,13 @@ public class HTML {
 
         /**
          * Extracts the contents of this tag, including texts and other tags.
+         * Warning: Will not work if the HTML contains void elements other than "br" and "br/".
          *
          * @return A new HTML instance containing the contents of this tag
          */
         public HTML getContent() {
+            String html = this.html.replace("<br>", "\n")
+                    .replace("<br/>", "\n"); // Remove any br tags that would break the stack
             int start = html.indexOf(getOpening()) + getOpening().length();
             int end = -1;
             // Iterate through the HTML, skipping this tag's opening
