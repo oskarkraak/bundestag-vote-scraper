@@ -71,20 +71,24 @@ public class VoteScraper implements Iterable<Vote> {
                         .getContent().getTags()[0]
                         .getContent().getTags()[0]
                         .getContent().toString();
-                String xlsxLink = null;
                 HTML.Tag[] downloadLinks = voteTag[2]
                         .getContent().getTags()[0]
                         .getContent().getTags()[1]
                         .getContent().getTags();
+                String xlsxLink = null;
                 for (HTML.Tag link : downloadLinks)
                     if (link.getContent().getTags()[0].getProperty("title").startsWith("XLSX"))
                         xlsxLink = link.getContent().getTags()[0].getProperty("href");
                 XLSX results;
-                try {
-                    results = XLSX.download(BUNDESTAG_DOMAIN + xlsxLink);
-                } catch (IOException e) {
+                if (xlsxLink == null) {
                     results = null;
-                    e.printStackTrace();
+                } else {
+                    try {
+                        results = XLSX.download(BUNDESTAG_DOMAIN + xlsxLink);
+                    } catch (IOException e) {
+                        results = null;
+                        e.printStackTrace();
+                    }
                 }
                 votes[i] = new Vote(publishingDate, documentDescription, results);
             }
