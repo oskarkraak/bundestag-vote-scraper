@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 public class XLSX {
 
@@ -71,12 +72,30 @@ public class XLSX {
      * @return A new XLSX instance that contains the concatenated contents of the given XLSX instances
      */
     public static XLSX concatenate(XLSX[] files) {
+        return concatenate(files, null);
+    }
+
+    /**
+     * Concatenates the contents of an array of XLSX instances.
+     * The contents will be concatenated in the order in which they are in the array.
+     * If specified, will skip rows in XLSX instances.
+     *
+     * @param files      contains the XLSX instances that should be concatenated
+     * @param rowsToSkip contains a 2D List for each XLSX instance in <code>files</code>.
+     *                   The Integers indicate which rows (0 based) should be skipped in each XLSX.
+     *                   Lists may be null if no row should be skipped.
+     * @return A new XLSX instance that contains the concatenated contents of the given XLSX instances
+     */
+    public static XLSX concatenate(XLSX[] files, List<List<Integer>> rowsToSkip) {
         XSSFWorkbook mergedWorkbook = new XSSFWorkbook();
         XSSFSheet mergedSheet = mergedWorkbook.createSheet();
         int fileStartRowNum = 0;
         for (int i = 0; i < files.length; i++) {
             XSSFSheet sheet = files[i].workbook.getSheetAt(0);
             for (Row row : sheet) {
+                if (rowsToSkip != null && rowsToSkip.get(i) != null
+                        && rowsToSkip.get(i).contains(row.getRowNum()))
+                    continue;
                 Row mergedRow = mergedSheet.createRow(fileStartRowNum + row.getRowNum());
                 for (Cell cell : row) {
                     Cell newCell = mergedRow.createCell(cell.getColumnIndex(), cell.getCellType());

@@ -2,6 +2,7 @@ package com.oskarkraak.bundestagvotescraper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BundestagVoteScraper {
 
@@ -64,16 +65,22 @@ public class BundestagVoteScraper {
             }
         }
         // Concatenate XLSX files
+        List<List<Integer>> rowsToSkip = new ArrayList<>();
         XLSX[] arr = new XLSX[files.size()];
         for (int j = 0; j < files.size(); j++) {
             arr[j] = files.get(j);
+            // Create List to skip the first row
+            ArrayList<Integer> a = new ArrayList<>();
+            if (j != 0)
+                a.add(0);
+            rowsToSkip.add(a);
             // Remove last row (1,048,575) if it exists
             // This is necessary because in one file this row exists for no reason, which messes up the XLSX.concatenate() method
             if (arr[j].getWorkbook().getSheetAt(0).getLastRowNum() == 1048575) {
                 arr[j].getWorkbook().getSheetAt(0).removeRow(arr[j].getWorkbook().getSheetAt(0).getRow(1048575));
             }
         }
-        XLSX concatenated = XLSX.concatenate(arr);
+        XLSX concatenated = XLSX.concatenate(arr, rowsToSkip);
         // Write file
         try {
             concatenated.write(outputPath + fileName);
