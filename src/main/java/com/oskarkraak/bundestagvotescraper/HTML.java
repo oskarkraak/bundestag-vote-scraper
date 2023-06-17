@@ -102,7 +102,7 @@ public class HTML {
             start += propertyName.length() + 3;
             int end = -1;
             for (int i = start; i < opening.length(); i++) {
-                if (html.charAt(i) == '"') {
+                if (opening.charAt(i) == '"') {
                     end = i;
                     break;
                 }
